@@ -6,10 +6,11 @@ const path = require('path');
 const createObjectCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csv = require('csv-parser');
 
-const walletCSVPath = path.join(__dirname, './wallet.csv')
+const walletCSVPath = path.join(__dirname, `./wallet.csv`)
+
 
 async function createWalletcsv() {
-    let data = Array(100).fill('_').map((_, index) => {
+    let data = Array(10).fill('_').map((_, index) => {
         const wallet = ethers.Wallet.createRandom()
         const { privateKey, address } = wallet
         return {

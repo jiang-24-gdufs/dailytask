@@ -46,3 +46,6 @@
 
 如果你想单独执行某个脚本，自己进项目文件夹执行就好了
 
+#### 6、运行lavaNet程序 
+
+`node dailytask/src/lavaNet/lavaRun.js`
