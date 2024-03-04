@@ -2,12 +2,14 @@ const fs = require('fs').promises;
 const fetch = require('node-fetch');
 const { HttpsProxyAgent } = require('https-proxy-agent');
 const ethers = require('ethers');
-
+const path = require('path');
+// const rpcPath = path.join(__dirname, './rpc.json');
+// const rpcUrls = await fs.readFile(rpcPath, 'utf8').then(JSON.parse);
 async function main() {
-    const config = await fs.readFile('../../config/runner.json', 'utf8').then(JSON.parse);
-    const rpcUrls = await fs.readFile('./rpc.json', 'utf8').then(JSON.parse);
-    const addresses = await fs.readFile('./wallet.csv', 'utf8')
-        .then(data => data.split('\n').filter(line => line));
+    // const config = await fs.readFile('../../config/runner.json', 'utf8').then(JSON.parse);
+    const rpcUrls = await fs.readFile(path.join(__dirname, './rpc.json'), 'utf8').then(JSON.parse);
+    const walletcsv = await fs.readFile(path.join(__dirname, './wallet.csv'), 'utf8')
+    const addresses = walletcsv.split('\n').filter(line => line);
 
     const shuffledAddresses = shuffleArray(addresses);
 
@@ -17,7 +19,7 @@ async function main() {
 
         const rpcUrl = rpcUrls[Math.floor(Math.random() * rpcUrls.length)];
         try {
-            const result = await checkBalanceAndAppend(address, rpcUrl, config.proxy);
+            const result = await checkBalanceAndAppend(address, rpcUrl/* , config.proxy */);
             console.log(i, result);
         } catch (error) {
             console.error(`Error fetching balance for address ${address}: ${error.message}`);
@@ -29,12 +31,12 @@ async function fetchWithProxy(url, body, proxyUrl) {
     const controller = new AbortController();
     setTimeout(() => controller.abort(), 5000);
 
-    const agent = new HttpsProxyAgent(proxyUrl);
+    // const agent = new HttpsProxyAgent(proxyUrl);
     const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
-        agent,
+        // agent,
         signal: controller.signal
     });
 
