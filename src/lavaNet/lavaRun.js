@@ -1,16 +1,65 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 const fetch = require('node-fetch');
 const { HttpsProxyAgent } = require('https-proxy-agent');
 const ethers = require('ethers');
 const path = require('path');
-// const rpcPath = path.join(__dirname, './rpc.json');
-// const rpcUrls = await fs.readFile(rpcPath, 'utf8').then(JSON.parse);
-async function main() {
-    // const config = await fs.readFile('../../config/runner.json', 'utf8').then(JSON.parse);
-    const rpcUrls = await fs.readFile(path.join(__dirname, './rpc.json'), 'utf8').then(JSON.parse);
-    const walletcsv = await fs.readFile(path.join(__dirname, './wallet.csv'), 'utf8')
-    const addresses = walletcsv.split('\n').filter(line => line);
+const createObjectCsvWriter = require('csv-writer').createObjectCsvWriter;
+const csv = require('csv-parser');
 
+const walletCSVPath = path.join(__dirname, './wallet.csv')
+
+async function createWalletcsv() {
+    let data = Array(100).fill('_').map((_, index) => {
+        const wallet = ethers.Wallet.createRandom()
+        const { privateKey, address } = wallet
+        return {
+            index: index,
+            privateKey: privateKey,
+            address: address
+        }
+    })
+
+    let csvWriter = createObjectCsvWriter({
+        path: walletCSVPath,
+        header: [
+            { id: 'index', title: 'INDEX' },
+            { id: 'privateKey', title: 'PRIVATE KEY' },
+            { id: 'address', title: 'PUBLIC KEY' },
+        ],
+    });
+
+    csvWriter.writeRecords(data)
+        .then(() => {
+            console.log('...Done');
+        });
+}
+
+async function main() {
+    createWalletcsv()
+
+    // const config = await fs.readFile('../../config/runner.json', 'utf8').then(JSON.parse);
+    // const walletcsv = await fs.readFile(walletCSVPath, 'utf8')
+    // const addresses = walletcsv.split('\n').filter(line => line);
+    const addresses = []
+
+    fs.createReadStream(walletCSVPath)
+        .pipe(csv())
+        .on('data', (row) => {
+            addresses.push(row['PUBLIC KEY']);
+        })
+        .on('end', () => {
+            console.log('地址读取完毕');
+            // resolve(addresses);
+            
+            setTimeout(() => {
+                readFromAddress(addresses)
+            }, 2500)
+        })
+}
+
+async function readFromAddress(addresses) {
+    let rpcUrls = fs.readFileSync(path.join(__dirname, './rpc.json'), { encoding: 'utf8' })
+    rpcUrls = JSON.parse(rpcUrls)
     const shuffledAddresses = shuffleArray(addresses);
 
     for (let i = 1; i < shuffledAddresses.length; i++) {
