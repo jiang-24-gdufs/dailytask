@@ -1,12 +1,14 @@
 const { exec } = require('child_process');
 
-const MAX = 2;
+const MAX = 50000;
 let count = 0;
 
 const id=setInterval(() => {
     count++;
+    console.error(`执行第: ${count} 次, 最大次数: ${MAX - 1}`);
     if (count >= MAX) {
         clearInterval(id);
+        console.error(`执行结束: ${count} 次`);
     }
     exec('node src/lavaNet/lavaRun.js', (error, stdout, stderr) => {
         if (error) {

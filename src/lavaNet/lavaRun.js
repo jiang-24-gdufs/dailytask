@@ -36,29 +36,32 @@ async function createWalletcsv() {
 }
 
 async function main() {
-    createWalletcsv()
+    // createWalletcsv()
 
     // const config = await fs.readFile('../../config/runner.json', 'utf8').then(JSON.parse);
     // const walletcsv = await fs.readFile(walletCSVPath, 'utf8')
     // const addresses = walletcsv.split('\n').filter(line => line);
-    const addresses = []
+    // const addresses = []
 
-    fs.createReadStream(walletCSVPath)
-        .pipe(csv())
-        .on('data', (row) => {
-            addresses.push(row['PUBLIC KEY']);
-        })
-        .on('end', () => {
-            console.log('地址读取完毕');
-            // resolve(addresses);
-            
-            setTimeout(() => {
-                readFromAddress(addresses)
-            }, 2500)
-        })
+    // fs.createReadStream(walletCSVPath)
+    //     .pipe(csv())
+    //     .on('data', (row) => {
+    //         addresses.push(row['PUBLIC KEY']);
+    //     })
+    //     .on('end', () => {
+    //         console.log('地址读取完毕');
+    //         // resolve(addresses);
+
+    //         setTimeout(() => {
+    //             readFromAddress(addresses)
+    //         }, 2500)
+    //     })
+
+    readFromAddress()
 }
 
-async function readFromAddress(addresses) {
+async function readFromAddress() {
+    const addresses = Array(20).fill('_').map(e => ethers.Wallet.createRandom().address)
     let rpcUrls = fs.readFileSync(path.join(__dirname, './rpc.json'), { encoding: 'utf8' })
     rpcUrls = JSON.parse(rpcUrls)
     const shuffledAddresses = shuffleArray(addresses);
