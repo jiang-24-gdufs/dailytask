@@ -23,9 +23,9 @@ async function createWalletcsv() {
     let csvWriter = createObjectCsvWriter({
         path: walletCSVPath,
         header: [
-            { id: 'index', title: 'INDEX' },
-            { id: 'privateKey', title: 'PRIVATE KEY' },
-            { id: 'address', title: 'PUBLIC KEY' },
+            { id: 'index', title: 'fuelAddress' },
+            { id: 'address', title: 'address' },
+            { id: 'privateKey', title: 'privateKey' },
         ],
     });
 

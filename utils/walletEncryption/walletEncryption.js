@@ -4,8 +4,8 @@ const csv = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const readlineSync = require('readline-sync');
 
-const inputFilePath = '/Users/admin/Desktop/testwallet/wallet.csv'; // 输入的CSV文件路径
-const outputFilePath = '/Users/admin/Desktop/testwallet/wallet.csv'; // 输出的CSV文件路径
+const inputFilePath = './.env/walleti.csv'; // 输入的CSV文件路径
+const outputFilePath = './.env/wallet.csv'; // 输出的CSV文件路径
 const columnIndex = 'privateKey'; // 需要加密的列的列名
 
 // 加密函数
@@ -22,6 +22,8 @@ function getKeyFromUser() {
     const key = readlineSync.question('请输入密码: ', {
         hideEchoBack: true, 
     });
+    const digestHex = crypto.createHash('sha256').update(String(key)).digest('hex')
+    console.log(digestHex)
     return crypto.createHash('sha256').update(String(key)).digest('base64').substr(0, 32); 
 }
 
@@ -34,6 +36,7 @@ function encryptColumnInCsv(inputFilePath, outputFilePath, privateKey) {
         .on('data', (row) => {
             if (row[privateKey]) {
                 row[privateKey] = encrypt(row[privateKey], secretKey);
+                console.log('加密成功');
             }
             results.push(row);
         })
