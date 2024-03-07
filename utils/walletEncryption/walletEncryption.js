@@ -4,8 +4,8 @@ const csv = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const readlineSync = require('readline-sync');
 
-const inputFilePath = './.env/walleti.csv'; // 输入的CSV文件路径
-const outputFilePath = './.env/wallet.csv'; // 输出的CSV文件路径
+const inputFilePath = './.wallets/walleti.csv'; // 输入的CSV文件路径
+const outputFilePath = './.wallets/wallet.csv'; // 输出的CSV文件路径
 const columnIndex = 'privateKey'; // 需要加密的列的列名
 
 // 加密函数
