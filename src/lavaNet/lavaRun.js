@@ -3,60 +3,8 @@ const fetch = require('node-fetch');
 const { HttpsProxyAgent } = require('https-proxy-agent');
 const ethers = require('ethers');
 const path = require('path');
-const createObjectCsvWriter = require('csv-writer').createObjectCsvWriter;
-const csv = require('csv-parser');
-
-const walletCSVPath = path.join(__dirname, `./wallet.csv`)
-
-
-async function createWalletcsv() {
-    let data = Array(10).fill('_').map((_, index) => {
-        const wallet = ethers.Wallet.createRandom()
-        const { privateKey, address } = wallet
-        return {
-            index: index,
-            privateKey: privateKey,
-            address: address
-        }
-    })
-
-    let csvWriter = createObjectCsvWriter({
-        path: walletCSVPath,
-        header: [
-            { id: 'index', title: 'fuelAddress' },
-            { id: 'address', title: 'address' },
-            { id: 'privateKey', title: 'privateKey' },
-        ],
-    });
-
-    csvWriter.writeRecords(data)
-        .then(() => {
-            console.log('...Done');
-        });
-}
 
 async function main() {
-    // createWalletcsv()
-
-    // const config = await fs.readFile('../../config/runner.json', 'utf8').then(JSON.parse);
-    // const walletcsv = await fs.readFile(walletCSVPath, 'utf8')
-    // const addresses = walletcsv.split('\n').filter(line => line);
-    // const addresses = []
-
-    // fs.createReadStream(walletCSVPath)
-    //     .pipe(csv())
-    //     .on('data', (row) => {
-    //         addresses.push(row['PUBLIC KEY']);
-    //     })
-    //     .on('end', () => {
-    //         console.log('地址读取完毕');
-    //         // resolve(addresses);
-
-    //         setTimeout(() => {
-    //             readFromAddress(addresses)
-    //         }, 2500)
-    //     })
-
     readFromAddress()
 }
 
