@@ -5,7 +5,8 @@
   "main": "claimRaffle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lava": "node src/lavaNet/lava.js"
+    "lava": "node src/lavaNet/lava.js",
+    "bera": "node src/bearChain/bearToken.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "https-proxy-agent": "^7.0.2",
     "node-fetch": "^2.7.0",
     "readline-sync": "^1.4.10",
-    "save": "^2.9.0"
+    "save": "^2.9.0",
+    "dotenv": "^16.4.5"
   }
 }

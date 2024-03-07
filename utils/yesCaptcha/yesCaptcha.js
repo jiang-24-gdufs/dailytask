@@ -1,6 +1,7 @@
 const axios = require('axios');
+require('dotenv').config()
 
-const clientKey = 'YOUR CLIENT KEY';
+const clientKey = process.env.YES_CAPTCHA_KEY;
 
 // 创建验证码任务
 async function createTask(websiteUrl, websiteKey, taskType, pageAction) {
@@ -13,7 +14,7 @@ async function createTask(websiteUrl, websiteKey, taskType, pageAction) {
             "pageAction": pageAction,
             "type": taskType
         },
-        "softID": 'YOUR CLIENT KEY'
+        "softID": process.env.YESCAPTCHA_CLIENT_KEY
     }
     
     const response = await axios.post(url, params);
