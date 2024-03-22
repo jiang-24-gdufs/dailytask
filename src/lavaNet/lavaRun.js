@@ -9,13 +9,12 @@ async function main() {
 }
 
 async function readFromAddress() {
-    const addresses = Array(20).fill('_').map(e => ethers.Wallet.createRandom().address)
+    const addresses = Array(30).fill('_').map(e => ethers.Wallet.createRandom().address)
     let rpcUrls = fs.readFileSync(path.join(__dirname, './rpc.json'), { encoding: 'utf8' })
     rpcUrls = JSON.parse(rpcUrls)
-    const shuffledAddresses = shuffleArray(addresses);
 
-    for (let i = 1; i < shuffledAddresses.length; i++) {
-        const address = shuffledAddresses[i].split(',')[0].trim();
+    for (let i = 0; i < addresses.length; i++) {
+        const address = addresses[i].split(',')[0].trim();
         if (!address) continue;
 
         const rpcUrl = rpcUrls[Math.floor(Math.random() * rpcUrls.length)];

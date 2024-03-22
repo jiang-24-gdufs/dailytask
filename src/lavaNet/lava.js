@@ -1,6 +1,6 @@
 const { exec } = require('child_process');
 
-const MAX = 50000;
+const MAX = 500000;
 let count = 0;
 
 const id=setInterval(() => {
